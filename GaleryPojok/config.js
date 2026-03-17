@@ -1,11 +1,10 @@
 // ╔══════════════════════════════════════════════════════╗
 // ║         DIPOJOK GALLERY — FILE KONFIGURASI           ║
-// ║   Edit file ini saja, jangan ubah file lainnya!      ║
 // ╚══════════════════════════════════════════════════════╝
 
 const DIPOJOK_CONFIG = {
 
-  // ── FIREBASE CONFIG ─────────────────────────────────
+  // ── 1. FIREBASE ──────────────────────────────────────
   firebase: {
     apiKey:            "AIzaSyBGic9C3jshVjLKKH8ZveaXEzzHvkNJEL0",
     authDomain:        "galerypojok.firebaseapp.com",
@@ -16,14 +15,19 @@ const DIPOJOK_CONFIG = {
     appId:             "1:747091526730:web:78af6c1c5707176a6812b3"
   },
 
-  // ── EMAIL TEAM (yang boleh login & upload) ───────────
+  // ── 2. CLOUDINARY ────────────────────────────────────
+  cloudinary: {
+    cloudName:    "dwkojxr30",
+    uploadPreset: "GaleryPojok"
+  },
+
+  // ── 3. EMAIL TEAM ────────────────────────────────────
   allowedEmails: [
-    "m.chairudin78@gmail.com",  // Admin utama
-    // tambah email team lain di bawah sini:
-    // "teamkamu@gmail.com",
+    "m.chairudin78@gmail.com",
+    // tambah email team lain di sini jika perlu
   ],
 
-  // ── NAMA WEB ─────────────────────────────────────────
+  // ── 4. NAMA WEB ──────────────────────────────────────
   siteName:    "DIPOJOK",
   siteTagline: "Gallery",
 

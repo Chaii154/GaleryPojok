@@ -11,7 +11,6 @@
   <link rel="manifest" href="manifest.json">
   <title>DIPOJOK Gallery</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- ✅ EDIT FILE config.js UNTUK MENGUBAH PENGATURAN -->
   <script src="config.js"></script>
   <style>
     :root{--red:#e8192c;--red-dark:#b5111f;--red-glow:rgba(232,25,44,.3);--white:#fff;--off-white:#f0f0f0;--black:#0a0a0a;--gray:#1a1a1a;--gray-mid:#2a2a2a;--gray-light:#3a3a3a;--muted:#777}
@@ -20,7 +19,6 @@
     .screen{position:fixed;inset:0;display:none;flex-direction:column;background:var(--black);overflow:hidden;animation:fi .25s ease}
     .screen.active{display:flex}
     @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-    /* TOPBAR */
     .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--gray-mid);flex-shrink:0;z-index:10}
     .logo-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
     .logo-text{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px}
@@ -30,7 +28,6 @@
     .ibtn:active{transform:scale(.92);background:var(--gray-light)}
     .ibtn.red{background:var(--red)}
     .ibtn.red:active{background:var(--red-dark)}
-    /* BOTTOM NAV */
     .bnav{display:flex;background:var(--black);border-top:1px solid var(--gray-mid);padding-bottom:env(safe-area-inset-bottom);flex-shrink:0}
     .nitem{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px;cursor:pointer;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;gap:4px;transition:color .15s}
     .nitem svg{width:19px;height:19px}
@@ -81,7 +78,7 @@
     .pcard img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
     .pcard:hover img{transform:scale(1.05)}
     .pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%);opacity:0;transition:opacity .2s;display:flex;align-items:flex-end;padding:8px}
-    .pcard:hover .pov{opacity:1}
+    .pcard:hover .pov,.pcard:active .pov{opacity:1}
     .pdate{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--off-white)}
     .empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:56px 20px;gap:10px;color:var(--muted)}
     .empty svg{width:44px;height:44px;opacity:.25}
@@ -162,12 +159,11 @@
     .tmrole{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;color:var(--red);text-transform:uppercase}
     .delbtn{padding:5px 12px;border:1px solid #f44;border-radius:6px;background:transparent;color:#f44;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all .15s}
     .delbtn:active{background:#f44;color:white}
-    /* TOAST */
+    /* TOAST & LOADER */
     .toast{position:fixed;bottom:calc(74px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(14px);background:var(--gray);border:1px solid var(--gray-mid);padding:10px 18px;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;z-index:500;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .toast.err{border-color:var(--red);color:var(--red)}
     .toast.ok{border-color:#2ecc71;color:#2ecc71}
-    /* LOADER */
     #loader{position:fixed;inset:0;z-index:400;background:rgba(10,10,10,.88);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px}
     #loader.show{display:flex}
     .spin{width:38px;height:38px;border-radius:50%;border:3px solid var(--gray-mid);border-top-color:var(--red);animation:sp .7s linear infinite}
@@ -216,7 +212,9 @@
   <div class="gscroll">
     <div class="sec-t">KATALOG TANGGAL</div>
     <div class="cstrip" id="chips"><div class="chip active" onclick="filt(null,this)">Semua</div></div>
-    <div class="pgrid" id="pgrid"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>BELUM ADA FOTO</p></div></div>
+    <div class="pgrid" id="pgrid">
+      <div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>BELUM ADA FOTO</p></div>
+    </div>
   </div>
   <div class="bnav">
     <div class="nitem active" id="nh" onclick="N('home','nh');toHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</div>
@@ -236,8 +234,10 @@
     <div style="width:38px"></div>
   </div>
   <div class="spad">
-    <div class="siwrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input class="si" id="si" type="text" placeholder="Ketik tanggal atau hari..." oninput="doSrch(this.value)"></div>
+    <div class="siwrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="si" id="si" type="text" placeholder="Ketik tanggal atau hari..." oninput="doSrch(this.value)">
+    </div>
   </div>
   <div class="sres" id="sres"><div style="color:var(--muted);font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;text-align:center;padding:36px">Ketik untuk mencari foto...</div></div>
 </div>
@@ -261,14 +261,14 @@
   </div>
   <div class="hscroll">
     <div class="hstep"><div class="hnum">1</div><div class="hcont"><div class="hbadge">Pengunjung</div><h3>LIHAT FOTO</h3><p>Buka halaman utama, semua foto langsung muncul. Tap foto untuk lihat lebih besar.</p></div></div>
-    <div class="hstep"><div class="hnum">2</div><div class="hcont"><div class="hbadge">Pengunjung</div><h3>DOWNLOAD FOTO</h3><p>Tap foto → tap tombol merah DOWNLOAD → foto otomatis tersimpan ke galeri atau folder Downloads HP kamu.</p></div></div>
+    <div class="hstep"><div class="hnum">2</div><div class="hcont"><div class="hbadge">Pengunjung</div><h3>DOWNLOAD FOTO</h3><p>Tap foto → tap tombol merah DOWNLOAD → foto tersimpan ke galeri HP kamu.</p></div></div>
     <div class="hstep"><div class="hnum">3</div><div class="hcont"><div class="hbadge">Pengunjung</div><h3>CARI BY TANGGAL</h3><p>Tap menu Cari → ketik tanggal (cth: 15 Maret) atau nama hari (cth: Rabu) → hasil muncul otomatis.</p></div></div>
     <div class="hstep"><div class="hnum">4</div><div class="hcont"><div class="hbadge">Pengunjung</div><h3>KATALOG</h3><p>Tap menu Katalog → semua tanggal upload tersusun rapi → tap salah satu untuk lihat foto di hari itu.</p></div></div>
-    <div class="hstep"><div class="hnum">5</div><div class="hcont"><div class="hbadge">Team</div><h3>LOGIN</h3><p>Tap menu Login → masukkan email & password → tap MASUK. Tombol upload (↑) muncul di kanan atas setelah login.</p></div></div>
+    <div class="hstep"><div class="hnum">5</div><div class="hcont"><div class="hbadge">Team</div><h3>LOGIN</h3><p>Tap menu Login → masukkan email & password → tap MASUK. Tombol upload (↑) muncul di kanan atas.</p></div></div>
     <div class="hstep"><div class="hnum">6</div><div class="hcont"><div class="hbadge">Team</div><h3>UPLOAD FOTO</h3><p>Tap ↑ merah → pilih foto (bisa lebih dari 1) → atur hari & tanggal manual → tap UPLOAD.</p></div></div>
     <div class="hstep"><div class="hnum">7</div><div class="hcont"><div class="hbadge">Team</div><h3>HAPUS FOTO</h3><p>Tap foto → tap HAPUS → konfirmasi. Hanya team yang sudah login yang bisa hapus.</p></div></div>
     <div class="hstep"><div class="hnum">8</div><div class="hcont"><div class="hbadge">Admin</div><h3>KELOLA TEAM</h3><p>Tap menu Admin → tambah email & password anggota baru atau hapus akses lama.</p></div></div>
-    <div class="hstep"><div class="hnum">9</div><div class="hcont"><div class="hbadge">Tips</div><h3>INSTALL KE HP</h3><p>Chrome: tap ⋮ → "Add to Home Screen". Safari iPhone: tap share → "Add to Home Screen". Web akan terpasang seperti aplikasi!</p></div></div>
+    <div class="hstep"><div class="hnum">9</div><div class="hcont"><div class="hbadge">Tips</div><h3>INSTALL KE HP</h3><p>Chrome: tap ⋮ → "Add to Home Screen". Safari iPhone: tap share → "Add to Home Screen". Web terpasang seperti aplikasi!</p></div></div>
   </div>
 </div>
 
@@ -277,7 +277,9 @@
   <div class="topbar">
     <button class="ibtn" onclick="back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="m15 18-6-6 6-6"/></svg></button>
     <div class="logo-text" style="font-size:17px">ADMIN</div>
-    <button class="ibtn" onclick="doLogout()" title="Logout" style="color:#f44;border:1px solid rgba(255,68,68,.4);background:transparent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+    <button class="ibtn" onclick="doLogout()" style="color:#f44;border:1px solid rgba(255,68,68,.4);background:transparent">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
   </div>
   <div class="ascroll">
     <div class="acard"><div class="actitle">AKUN AKTIF</div><div id="curuser" style="font-size:13px;color:var(--muted)">—</div></div>
@@ -302,8 +304,12 @@
     </div>
     <div class="lbwrap"><img class="lbimg" id="lbi" src="" alt=""></div>
     <div class="lbacts">
-      <button class="lbbtn dl" onclick="dlP()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>DOWNLOAD</button>
-      <button class="lbbtn del" id="lbdel" onclick="delP()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>HAPUS</button>
+      <button class="lbbtn dl" onclick="dlP()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>DOWNLOAD
+      </button>
+      <button class="lbbtn del" id="lbdel" onclick="delP()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>HAPUS
+      </button>
     </div>
   </div>
 </div>
@@ -326,7 +332,10 @@
       </div>
       <div class="fld"><label>Tanggal</label><input id="udt" type="text" placeholder="cth: 15 Maret 2025"></div>
     </div>
-    <div class="uprog" id="uprog"><div class="upbar"><div class="upfill" id="upfill"></div></div><div class="uptxt" id="uptxt">Mengupload...</div></div>
+    <div class="uprog" id="uprog">
+      <div class="upbar"><div class="upfill" id="upfill"></div></div>
+      <div class="uptxt" id="uptxt">Mengupload...</div>
+    </div>
     <div class="row2">
       <button class="btn-out" style="flex:1" onclick="closeUp()">BATAL</button>
       <button class="btn-red" style="flex:2;margin-top:0" onclick="startUp()">UPLOAD</button>
@@ -341,39 +350,48 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const C = window.DIPOJOK_CONFIG;
-if (!C) { document.body.innerHTML='<div style="color:red;padding:40px;font-family:monospace">ERROR: config.js tidak ditemukan atau salah format!</div>'; throw 0; }
+if (!C) { document.body.innerHTML='<div style="color:red;padding:40px;font-family:monospace">ERROR: config.js tidak ditemukan!</div>'; throw 0; }
 
-// Apply branding
-document.getElementById('ssub').textContent = C.siteTagline || 'Gallery';
-document.getElementById('lbrand').textContent = C.siteName || 'DIPOJOK';
+document.getElementById('ssub').textContent   = C.siteTagline || 'Gallery';
+document.getElementById('lbrand').textContent = C.siteName   || 'DIPOJOK';
 document.title = (C.siteName||'DIPOJOK') + ' ' + (C.siteTagline||'Gallery');
 
 const app  = initializeApp(C.firebase);
 const auth = getAuth(app);
 const db   = getFirestore(app);
-const stor = getStorage(app);
+
+// ── Cloudinary upload (unsigned) ──────────────────────
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', C.cloudinary.uploadPreset);
+  fd.append('folder', 'dipojok');
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${C.cloudinary.cloudName}/image/upload`,
+    { method: 'POST', body: fd }
+  );
+  if (!res.ok) {
+    const e = await res.json();
+    throw new Error(e.error?.message || 'Upload gagal');
+  }
+  const d = await res.json();
+  return { url: d.secure_url, publicId: d.public_id };
+}
 
 let user=null, isTeam=false, photos=[], cur=null, selF=[], prev='home';
 
-// Boot after splash
 window.addEventListener('load', () => setTimeout(() => onAuthStateChanged(auth, handleAuth), 1700));
 
 async function handleAuth(u) {
-  user = u;
-  isTeam = false;
+  user=u; isTeam=false;
   if (u) {
-    const emailOk = (C.allowedEmails||[]).map(e=>e.toLowerCase()).includes(u.email.toLowerCase());
-    if (emailOk) { isTeam = true; }
-    else {
-      try { const s = await getDoc(doc(db,'team',u.uid)); isTeam = s.exists(); } catch {}
-    }
+    const ok = (C.allowedEmails||[]).map(e=>e.toLowerCase()).includes(u.email.toLowerCase());
+    if (ok) { isTeam=true; }
+    else { try { const s=await getDoc(doc(db,'team',u.uid)); isTeam=s.exists(); } catch {} }
   }
-  updateUI();
-  S('home');
-  loadPhotos();
+  updateUI(); S('home'); loadPhotos();
   if (isTeam) loadAdm();
 }
 
@@ -386,19 +404,19 @@ function updateUI() {
   if (user) document.getElementById('curuser').textContent = user.email;
 }
 
-// AUTH
+// ── AUTH ──────────────────────────────────────────────
 window.doLogin = async () => {
   const e=document.getElementById('le').value.trim(), p=document.getElementById('lp').value;
   const err=document.getElementById('lerr');
   if(!e||!p){err.textContent='Isi email dan password';return;}
   L(1);
   try { await signInWithEmailAndPassword(auth,e,p); err.textContent=''; toast('Selamat datang!','ok'); }
-  catch(x){err.textContent=x.code==='auth/invalid-credential'?'Email atau password salah':x.message;}
+  catch(x){ err.textContent = x.code==='auth/invalid-credential'?'Email atau password salah':x.message; }
   L(0);
 };
 window.doLogout = async () => { await signOut(auth); S('home'); toast('Berhasil logout','ok'); };
 
-// PHOTOS
+// ── PHOTOS ────────────────────────────────────────────
 async function loadPhotos() {
   L(1);
   try {
@@ -406,62 +424,204 @@ async function loadPhotos() {
     const sn = await getDocs(q);
     photos = sn.docs.map(d=>({id:d.id,...d.data()}));
     renderG(photos); renderChips();
-  } catch(e){console.error(e);}
+  } catch(e){ console.error(e); }
   L(0);
 }
 
 function renderG(list) {
   const g = document.getElementById('pgrid');
-  if (!list.length) { g.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>BELUM ADA FOTO</p></div>`; return; }
-  g.innerHTML = list.map(p=>`<div class="pcard" onclick="openLB('${p.id}')"><img src="${p.url}" loading="lazy" alt=""><div class="pov"><div class="pdate">${p.displayDay?p.displayDay+', ':''}${p.displayDate||''}</div></div></div>`).join('');
+  if (!list.length) {
+    g.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>BELUM ADA FOTO</p></div>`;
+    return;
+  }
+  g.innerHTML = list.map(p=>`
+    <div class="pcard" onclick="openLB('${p.id}')">
+      <img src="${p.url}" loading="lazy" alt="">
+      <div class="pov"><div class="pdate">${p.displayDay?p.displayDay+', ':''}${p.displayDate||''}</div></div>
+    </div>`).join('');
 }
-function renderChips() {
-  const dates=[...new Set(photos.map(p=>p.displayDate).filter(Boolean))];
-  document.getElementById('chips').innerHTML=`<div class="chip active" onclick="filt(null,this)">Semua</div>`+dates.map(d=>`<div class="chip" onclick="filt('${d}',this)">${d}</div>`).join('');
-}
-window.filt=(d,el)=>{ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); el?.classList.add('active'); renderG(d?photos.filter(p=>p.displayDate===d):photos); };
-window.toHome=()=>{ renderG(photos); renderChips(); };
 
-// CATALOG
-window.loadCat=()=>{
+function renderChips() {
+  const dates = [...new Set(photos.map(p=>p.displayDate).filter(Boolean))];
+  document.getElementById('chips').innerHTML =
+    `<div class="chip active" onclick="filt(null,this)">Semua</div>` +
+    dates.map(d=>`<div class="chip" onclick="filt('${d}',this)">${d}</div>`).join('');
+}
+
+window.filt = (d,el) => {
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el?.classList.add('active');
+  renderG(d ? photos.filter(p=>p.displayDate===d) : photos);
+};
+window.toHome = () => { renderG(photos); renderChips(); };
+
+// ── CATALOG ───────────────────────────────────────────
+window.loadCat = () => {
   const grp={};
   photos.forEach(p=>{ const k=(p.displayDay?p.displayDay+', ':'')+(p.displayDate||'Tanpa Tanggal'); (grp[k]=grp[k]||[]).push(p); });
   const el=document.getElementById('clist'), en=Object.entries(grp);
-  el.innerHTML=en.length?en.map(([k,ps])=>`<div class="ci" onclick="gotoD('${k}')"><div><div class="cidate">${k}</div><div class="cicnt">${ps.length} FOTO</div></div><div class="cthumbs">${ps.slice(0,3).map(p=>`<img class="cthumb" src="${p.url}" alt="">`).join('')}</div></div>`).join(''):'<div style="color:var(--muted);font-size:12px;text-align:center;padding:36px">Belum ada foto</div>';
+  el.innerHTML = en.length
+    ? en.map(([k,ps])=>`
+        <div class="ci" onclick="gotoD('${k}')">
+          <div><div class="cidate">${k}</div><div class="cicnt">${ps.length} FOTO</div></div>
+          <div class="cthumbs">${ps.slice(0,3).map(p=>`<img class="cthumb" src="${p.url}" alt="">`).join('')}</div>
+        </div>`).join('')
+    : '<div style="color:var(--muted);font-size:12px;text-align:center;padding:36px">Belum ada foto</div>';
 };
-window.gotoD=k=>{ S('home'); renderG(photos.filter(p=>((p.displayDay?p.displayDay+', ':'')+(p.displayDate||'Tanpa Tanggal'))===k)); document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); };
+window.gotoD = k => {
+  S('home');
+  renderG(photos.filter(p=>((p.displayDay?p.displayDay+', ':'')+(p.displayDate||'Tanpa Tanggal'))===k));
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+};
 
-// SEARCH
-window.doSrch=q=>{ const t=q.toLowerCase().trim(),el=document.getElementById('sres'); if(!t){el.innerHTML='<div style="color:var(--muted);font-family:\'Barlow Condensed\';font-size:12px;letter-spacing:1px;text-align:center;padding:36px">Ketik untuk mencari foto...</div>';return;} const found=photos.filter(p=>(p.displayDate||'').toLowerCase().includes(t)||(p.displayDay||'').toLowerCase().includes(t)); if(!found.length){el.innerHTML=`<div style="color:var(--muted);font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;text-align:center;padding:36px">Tidak ada hasil untuk "${q}"</div>`;return;} const grp={}; found.forEach(p=>{const k=(p.displayDay?p.displayDay+', ':'')+(p.displayDate||'Tanpa Tanggal');(grp[k]=grp[k]||[]).push(p);}); el.innerHTML=Object.entries(grp).map(([k,ps])=>`<div class="sgrp"><div class="sglabel">${k}</div><div class="pgrid" style="grid-template-columns:repeat(3,1fr)">${ps.map(p=>`<div class="pcard" onclick="openLB('${p.id}')"><img src="${p.url}" loading="lazy" alt=""><div class="pov"><div class="pdate">${k}</div></div></div>`).join('')}</div></div>`).join(''); };
+// ── SEARCH ────────────────────────────────────────────
+window.doSrch = q => {
+  const t=q.toLowerCase().trim(), el=document.getElementById('sres');
+  if (!t) { el.innerHTML='<div style="color:var(--muted);font-family:\'Barlow Condensed\';font-size:12px;letter-spacing:1px;text-align:center;padding:36px">Ketik untuk mencari foto...</div>'; return; }
+  const found = photos.filter(p=>(p.displayDate||'').toLowerCase().includes(t)||(p.displayDay||'').toLowerCase().includes(t));
+  if (!found.length) { el.innerHTML=`<div style="color:var(--muted);font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;text-align:center;padding:36px">Tidak ada hasil untuk "${q}"</div>`; return; }
+  const grp={};
+  found.forEach(p=>{ const k=(p.displayDay?p.displayDay+', ':'')+(p.displayDate||'Tanpa Tanggal'); (grp[k]=grp[k]||[]).push(p); });
+  el.innerHTML = Object.entries(grp).map(([k,ps])=>`
+    <div class="sgrp">
+      <div class="sglabel">${k}</div>
+      <div class="pgrid" style="grid-template-columns:repeat(3,1fr)">
+        ${ps.map(p=>`<div class="pcard" onclick="openLB('${p.id}')"><img src="${p.url}" loading="lazy" alt=""><div class="pov"><div class="pdate">${k}</div></div></div>`).join('')}
+      </div>
+    </div>`).join('');
+};
 
-// LIGHTBOX
-window.openLB=id=>{ cur=photos.find(p=>p.id===id); if(!cur)return; document.getElementById('lbi').src=cur.url; document.getElementById('lbd').textContent=(cur.displayDay?cur.displayDay+', ':'')+( cur.displayDate||''); prev=document.querySelector('.screen.active')?.id||'home'; S('lb'); };
-window.closeLB=()=>S(prev==='lb'?'home':prev);
-window.dlP=async()=>{ if(!cur)return; toast('Mengunduh...',''); try{const r=await fetch(cur.url),b=await r.blob(),a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`dipojok_${cur.displayDate||'foto'}.jpg`; document.body.appendChild(a);a.click();document.body.removeChild(a); toast('Foto berhasil diunduh!','ok');}catch{window.open(cur.url,'_blank');} };
-window.delP=async()=>{ if(!cur||!isTeam)return; if(!confirm('Hapus foto ini?'))return; L(1); try{if(cur.storagePath)await deleteObject(ref(stor,cur.storagePath)); await deleteDoc(doc(db,'photos',cur.id)); photos=photos.filter(p=>p.id!==cur.id); renderG(photos);renderChips(); S('home'); toast('Foto dihapus','ok');}catch(e){toast('Gagal: '+e.message,'err');} L(0); };
+// ── LIGHTBOX ──────────────────────────────────────────
+window.openLB = id => {
+  cur = photos.find(p=>p.id===id);
+  if (!cur) return;
+  document.getElementById('lbi').src = cur.url;
+  document.getElementById('lbd').textContent = (cur.displayDay?cur.displayDay+', ':'')+(cur.displayDate||'');
+  prev = document.querySelector('.screen.active')?.id || 'home';
+  S('lb');
+};
+window.closeLB = () => S(prev==='lb'?'home':prev);
 
-// UPLOAD
-window.openUp=()=>{ if(!isTeam){toast('Login dulu','err');return;} const now=new Date(),ds=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],ms=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; document.getElementById('ud').value=ds[now.getDay()]; document.getElementById('udt').value=`${now.getDate()} ${ms[now.getMonth()]} ${now.getFullYear()}`; selF=[]; document.getElementById('uprev').innerHTML=''; document.getElementById('uprog').style.display='none'; document.getElementById('upfill').style.width='0'; document.getElementById('umo').classList.add('show'); };
-window.closeUp=()=>document.getElementById('umo').classList.remove('show');
-window.onF=files=>{ selF=[...files]; document.getElementById('uprev').innerHTML=selF.map((f,i)=>{const u=URL.createObjectURL(f);return`<div class="uprev-item"><img src="${u}"><button class="uprm" onclick="rmF(${i})">×</button></div>`;}).join(''); };
-window.rmF=i=>{ selF.splice(i,1); window.onF(selF); };
-window.startUp=async()=>{ if(!selF.length){toast('Pilih foto dulu','err');return;} const day=document.getElementById('ud').value,date=document.getElementById('udt').value.trim(); if(!date){toast('Isi tanggal','err');return;} document.getElementById('uprog').style.display='block'; let done=0; for(const f of selF){try{const path=`photos/${Date.now()}_${Math.random().toString(36).slice(2)}_${f.name}`,sr=ref(stor,path);await uploadBytes(sr,f);const url=await getDownloadURL(sr);await addDoc(collection(db,'photos'),{url,storagePath:path,displayDay:day,displayDate:date,uploadedBy:user.email,uploadedAt:new Date().toISOString()});done++;document.getElementById('upfill').style.width=(done/selF.length*100)+'%';document.getElementById('uptxt').textContent=`${done}/${selF.length} foto diupload`;}catch(e){toast('Gagal: '+f.name,'err');}} closeUp(); toast(`${done} foto berhasil diupload!`,'ok'); loadPhotos(); };
+window.dlP = async () => {
+  if (!cur) return;
+  toast('Mengunduh...','');
+  try {
+    const r=await fetch(cur.url), b=await r.blob(), a=document.createElement('a');
+    a.href=URL.createObjectURL(b);
+    a.download=`dipojok_${cur.displayDate||'foto'}.jpg`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    toast('Foto berhasil diunduh!','ok');
+  } catch { window.open(cur.url,'_blank'); }
+};
 
-// ADMIN
-window.loadAdm=async()=>{ try{const sn=await getDocs(collection(db,'team')),mb=sn.docs.map(d=>({id:d.id,...d.data()})); document.getElementById('tlist').innerHTML=mb.length?mb.map(m=>`<div class="tmrow"><div><div class="tmemail">${m.email}</div><div class="tmrole">${m.role||'member'}</div></div>${m.id!==user?.uid?`<button class="delbtn" onclick="rmMbr('${m.id}','${m.email}')">HAPUS</button>`:'<span style="font-size:10px;color:var(--muted)">Kamu</span>'}</div>`).join(''):'<div style="color:var(--muted);font-size:12px">Kosong</div>'; document.getElementById('stats').innerHTML=`Total foto: <b style="color:white">${photos.length}</b><br>Anggota team: <b style="color:white">${mb.length}</b>`;}catch{} };
-window.addMbr=async()=>{ const e=document.getElementById('te').value.trim(),p=document.getElementById('tp').value; if(!e||!p){toast('Isi email dan password','err');return;} L(1); try{const cr=await createUserWithEmailAndPassword(auth,e,p);await setDoc(doc(db,'team',cr.user.uid),{email:e,role:'member',createdAt:new Date().toISOString()});toast('Ditambahkan: '+e,'ok');document.getElementById('te').value='';document.getElementById('tp').value='';loadAdm();}catch(x){toast(x.message,'err');} L(0); };
-window.rmMbr=async(id,e)=>{ if(!confirm('Hapus akses '+e+'?'))return; L(1); try{await deleteDoc(doc(db,'team',id));toast('Akses '+e+' dihapus','ok');loadAdm();}catch(x){toast(x.message,'err');} L(0); };
+window.delP = async () => {
+  if (!cur||!isTeam) return;
+  if (!confirm('Hapus foto ini?')) return;
+  L(1);
+  try {
+    await deleteDoc(doc(db,'photos',cur.id));
+    photos = photos.filter(p=>p.id!==cur.id);
+    renderG(photos); renderChips();
+    S('home'); toast('Foto dihapus','ok');
+  } catch(e){ toast('Gagal: '+e.message,'err'); }
+  L(0);
+};
 
-// NAVIGATION
-window.S=id=>{ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id)?.classList.add('active'); };
-window.N=(id,nid)=>{ S(id); document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active')); document.getElementById(nid)?.classList.add('active'); };
-window.back=()=>S(prev==='lb'?'home':prev);
+// ── UPLOAD ────────────────────────────────────────────
+window.openUp = () => {
+  if (!isTeam){ toast('Login dulu','err'); return; }
+  const now=new Date(),
+    ds=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],
+    ms=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  document.getElementById('ud').value  = ds[now.getDay()];
+  document.getElementById('udt').value = `${now.getDate()} ${ms[now.getMonth()]} ${now.getFullYear()}`;
+  selF=[];
+  document.getElementById('uprev').innerHTML='';
+  document.getElementById('uprog').style.display='none';
+  document.getElementById('upfill').style.width='0';
+  document.getElementById('umo').classList.add('show');
+};
+window.closeUp = () => document.getElementById('umo').classList.remove('show');
+window.onF = files => {
+  selF=[...files];
+  document.getElementById('uprev').innerHTML = selF.map((f,i)=>{
+    const u=URL.createObjectURL(f);
+    return `<div class="uprev-item"><img src="${u}"><button class="uprm" onclick="rmF(${i})">×</button></div>`;
+  }).join('');
+};
+window.rmF = i => { selF.splice(i,1); window.onF(selF); };
 
+window.startUp = async () => {
+  if (!selF.length){ toast('Pilih foto dulu','err'); return; }
+  const day=document.getElementById('ud').value, date=document.getElementById('udt').value.trim();
+  if (!date){ toast('Isi tanggal','err'); return; }
+  document.getElementById('uprog').style.display='block';
+  let done=0;
+  for (const f of selF) {
+    try {
+      const {url, publicId} = await uploadToCloudinary(f);
+      await addDoc(collection(db,'photos'), {
+        url, publicId,
+        displayDay: day, displayDate: date,
+        uploadedBy: user.email,
+        uploadedAt: new Date().toISOString(),
+      });
+      done++;
+      document.getElementById('upfill').style.width = (done/selF.length*100)+'%';
+      document.getElementById('uptxt').textContent  = `${done}/${selF.length} foto diupload`;
+    } catch(e){ toast('Gagal: '+f.name+' — '+e.message,'err'); }
+  }
+  closeUp();
+  toast(`${done} foto berhasil diupload!`,'ok');
+  loadPhotos();
+};
+
+// ── ADMIN ─────────────────────────────────────────────
+window.loadAdm = async () => {
+  try {
+    const sn=await getDocs(collection(db,'team')), mb=sn.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('tlist').innerHTML = mb.length
+      ? mb.map(m=>`
+          <div class="tmrow">
+            <div><div class="tmemail">${m.email}</div><div class="tmrole">${m.role||'member'}</div></div>
+            ${m.id!==user?.uid
+              ? `<button class="delbtn" onclick="rmMbr('${m.id}','${m.email}')">HAPUS</button>`
+              : '<span style="font-size:10px;color:var(--muted)">Kamu</span>'}
+          </div>`).join('')
+      : '<div style="color:var(--muted);font-size:12px">Kosong</div>';
+    document.getElementById('stats').innerHTML =
+      `Total foto: <b style="color:white">${photos.length}</b><br>Anggota team: <b style="color:white">${mb.length}</b>`;
+  } catch{}
+};
+window.addMbr = async () => {
+  const e=document.getElementById('te').value.trim(), p=document.getElementById('tp').value;
+  if(!e||!p){ toast('Isi email dan password','err'); return; }
+  L(1);
+  try {
+    const cr=await createUserWithEmailAndPassword(auth,e,p);
+    await setDoc(doc(db,'team',cr.user.uid),{email:e,role:'member',createdAt:new Date().toISOString()});
+    toast('Ditambahkan: '+e,'ok');
+    document.getElementById('te').value=''; document.getElementById('tp').value='';
+    loadAdm();
+  } catch(x){ toast(x.message,'err'); }
+  L(0);
+};
+window.rmMbr = async (id,e) => {
+  if(!confirm('Hapus akses '+e+'?')) return;
+  L(1);
+  try { await deleteDoc(doc(db,'team',id)); toast('Akses '+e+' dihapus','ok'); loadAdm(); }
+  catch(x){ toast(x.message,'err'); }
+  L(0);
+};
+
+// ── NAVIGATION ────────────────────────────────────────
+window.S = id => { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id)?.classList.add('active'); };
+window.N = (id,nid) => { S(id); document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active')); document.getElementById(nid)?.classList.add('active'); };
+window.back = () => S(prev==='lb'?'home':prev);
 function L(on){ document.getElementById('loader').classList[on?'add':'remove']('show'); }
-window.toast=(m,t='')=>{ const el=document.getElementById('toast'); el.textContent=m; el.className='toast'+(t?' '+t:'')+' show'; setTimeout(()=>el.classList.remove('show'),2600); };
-
-document.getElementById('umo').addEventListener('click',e=>{ if(e.target===document.getElementById('umo'))closeUp(); });
-if('serviceWorker'in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+window.toast = (m,t='') => { const el=document.getElementById('toast'); el.textContent=m; el.className='toast'+(t?' '+t:'')+' show'; setTimeout(()=>el.classList.remove('show'),2600); };
+document.getElementById('umo').addEventListener('click', e=>{ if(e.target===document.getElementById('umo')) closeUp(); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
 </body>
 </html>
