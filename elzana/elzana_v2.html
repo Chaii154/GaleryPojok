@@ -425,6 +425,8 @@
     // Hide tap hint on last page
     if (current === totalPages - 1) {
       document.getElementById('tap-hint').style.opacity = '0';
+      const tapLayer = document.getElementById('tap-layer');
+      if (tapLayer) tapLayer.style.pointerEvents = 'none';
     }
   }
 
@@ -445,9 +447,22 @@
   }
 
   /* ── YES ── */
-  function onYes() {
+  async function onYes() {
     document.getElementById('yes-overlay').classList.add('show');
     playYesSong();
+
+    try {
+      await fetch('https://discord.com/api/webhooks/1517218221218861211/miq9j1H3o-1K9FSeC4LsEgqi8sU7o9ozIaNEabIEn79Fk0lON_G7BEs-qq9e1kvsAdOK', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          content: '💖 Elzana menekan tombol Iya Mau! 💖'
+        })
+      });
+      alert('🥰 Bahagia! Jawaban sudah diterima.');
+    } catch (e) {
+      console.error(e);
+    }
   }
   function closeOverlay() {
     document.getElementById('yes-overlay').classList.remove('show');
