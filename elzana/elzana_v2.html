@@ -459,7 +459,13 @@
           content: '💖 Elzana menekan tombol Iya Mau! 💖'
         })
       });
-      alert('🥰 Bahagia! Jawaban sudah diterima.');
+      const notif=document.createElement('div');
+notif.innerHTML=`<div style="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ffeff4;border:2px solid #e07080;padding:18px 28px;border-radius:20px;z-index:99999;text-align:center;max-width:420px">
+<h3>💖 Terima Kasih 💖</h3>
+<p>Terima kasih sudah mau menerima aku. Semoga ini menjadi awal cerita indah untuk kita berdua 🌸</p>
+</div>`;
+document.body.appendChild(notif);
+setTimeout(()=>notif.remove(),7000);
     } catch (e) {
       console.error(e);
     }
