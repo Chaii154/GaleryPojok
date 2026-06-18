@@ -446,34 +446,108 @@
     noBtn.style.top  = Math.random() * vh + 'px';
   }
 
-  /* ── YES ── */
-  async function onYes() {
-    document.getElementById('yes-overlay').classList.add('show');
-    playYesSong();
+/* ── YES ── */
+async function onYes() {
+  document.getElementById('yes-overlay').classList.add('show');
+  playYesSong();
 
-    try {
-      await fetch('https://discord.com/api/webhooks/1517218221218861211/miq9j1H3o-1K9FSeC4LsEgqi8sU7o9ozIaNEabIEn79Fk0lON_G7BEs-qq9e1kvsAdOK', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          content: '💖 Elzana menekan tombol Iya Mau! 💖'
-        })
-      });
-      const notif=document.createElement('div');
-notif.innerHTML=`<div style="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ffeff4;border:2px solid #e07080;padding:18px 28px;border-radius:20px;z-index:99999;text-align:center;max-width:420px">
-<h3>💖 Terima Kasih 💖</h3>
-<p>Terima kasih sudah mau menerima aku. Semoga ini menjadi awal cerita indah untuk kita berdua 🌸</p>
-</div>`;
-document.body.appendChild(notif);
-setTimeout(()=>notif.remove(),7000);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  function closeOverlay() {
-    document.getElementById('yes-overlay').classList.remove('show');
-  }
+  try {
+    await fetch('https://discord.com/api/webhooks/1517218221218861211/miq9j1H3o-1K9FSeC4LsEgqi8sU7o9ozIaNEabIEn79Fk0lON_G7BEs-qq9e1kvsAdOK', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: '💖 Kisah Kita',
+        avatar_url: 'https://cdn-icons-png.flaticon.com/512/833/833472.png',
+        embeds: [{
+          title: '🌸 DIA MENERIMAKU 🌸',
+          description: `💌 KABAR BAHAGIA!
 
+❤️ Elzana telah menekan tombol "Iya Mau"
+
+Hari ini menjadi salah satu hari paling membahagiakan dalam hidupku.
+
+Terima kasih karena sudah mau menerima aku apa adanya.
+
+Mungkin aku bukan laki-laki yang sempurna.
+Aku masih banyak kurangnya, masih banyak salahnya.
+
+Tapi aku berjanji akan selalu berusaha menjadi seseorang yang bisa membuatmu tersenyum ketika sedih, menemanimu ketika lelah, dan tetap ada ketika dunia terasa berat.
+
+Hari ini bukan hanya tentang sebuah jawaban.
+
+Hari ini adalah awal dari cerita yang ingin aku tulis bersamamu.
+
+Semoga setiap langkah yang kita jalani dipenuhi kebahagiaan, tawa, dan kenangan yang indah.
+
+❤️ Terima kasih sudah memberikan kesempatan untuk mengisi ruang di hatimu.
+
+✨ Dan jawaban yang paling aku tunggu akhirnya datang.
+
+Dan jawabannya adalah kamu. ✨`,
+          color: 16738740,
+          thumbnail: {
+            url: 'https://cdn-icons-png.flaticon.com/512/2589/2589175.png'
+          },
+          footer: {
+            text: 'Made With Love ❤️'
+          },
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+
+    const notif = document.createElement('div');
+
+    notif.innerHTML = `
+      <div style="
+        position:fixed;
+        inset:0;
+        background:rgba(255,192,203,.95);
+        backdrop-filter:blur(8px);
+        z-index:99999;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        padding:20px;
+      ">
+        <div style="
+          background:white;
+          padding:35px;
+          border-radius:25px;
+          max-width:500px;
+          box-shadow:0 20px 60px rgba(0,0,0,.25);
+          animation:pop .4s ease;
+        ">
+          <h1 style="color:#e07080;margin-bottom:15px;">
+            💖 Terima Kasih 💖
+          </h1>
+
+          <p style="font-size:18px;line-height:1.8;color:#444;">
+            Terima kasih sudah mau menerima aku.
+            <br><br>
+            Hari ini adalah awal cerita yang ingin aku tulis bersamamu.
+            <br><br>
+            Semoga setiap langkah yang kita jalani dipenuhi kebahagiaan, tawa, dan kenangan yang indah.
+            <br><br>
+            ❤️ Aku bahagia hari ini karena jawabannya adalah kamu. ❤️
+          </p>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(notif);
+
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function closeOverlay() {
+  document.getElementById('yes-overlay').classList.remove('show');
+}
   /* ── MUSIC ── */
   let bgPlayer = null, yesPlayer = null;
   let isMuted = false, currentSong = 'bg';
