@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Untuk Elzana 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:#0d0510;-webkit-tap-highlight-color:transparent;}
+
+/* BG */
+#bg{position:fixed;inset:0;z-index:0;transition:background 1.2s ease;background:linear-gradient(150deg,#1a0818,#2d0d28,#1a0a14);}
+
+/* CANVAS */
+canvas{position:fixed;inset:0;pointer-events:none;}
+#c-stars{z-index:1;}
+#c-clouds{z-index:2;}
+#c-petals{z-index:3;}
+
+/* PAGES WRAPPER — ini yang ditap */
+#pages{position:fixed;inset:0;z-index:10;}
+
+/* EACH PAGE */
+.pg{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:3.5rem 1.6rem 5rem;
+  opacity:0;pointer-events:none;overflow-y:auto;
+  transition:opacity .05s;
+}
+.pg.show{opacity:1;pointer-events:all;}
+
+/* DOTS */
+#dots{position:fixed;top:1.3rem;left:50%;transform:translateX(-50%);display:flex;gap:.45rem;z-index:20;pointer-events:none;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .4s;}
+.dot.on{background:#e8748a;transform:scale(1.7);box-shadow:0 0 8px #e8748a;}
+
+/* TAP HINT */
+#hint{position:fixed;bottom:1.7rem;left:50%;transform:translateX(-50%);z-index:20;pointer-events:none;
+  font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  animation:bnc 2s ease-in-out infinite;}
+@keyframes bnc{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
+
+/* MUSIC */
+#mbtn{position:fixed;bottom:1.3rem;right:1.3rem;width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  cursor:pointer;z-index:20;-webkit-tap-highlight-color:transparent;}
+
+/* TYPOGRAPHY */
+.eyebrow{font-family:'Dancing Script',cursive;color:#e8748a;font-size:1.1rem;margin-bottom:.6rem;}
+.tag{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.7rem;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,9vw,5rem);line-height:1.05;color:#fff;text-shadow:0 2px 30px rgba(232,116,138,.4);}
+h1 em{font-style:italic;color:#e8748a;}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,5.5vw,2.2rem);line-height:1.2;color:#fff;margin-bottom:.85rem;}
+h2 em{font-style:italic;color:#e8748a;}
+p.txt{font-size:.94rem;line-height:1.9;color:rgba(255,255,255,.78);font-weight:300;max-width:440px;margin:0 auto .65rem;}
+p.txt em{color:#f9d0da;font-style:normal;font-weight:600;}
+.sub{color:rgba(255,255,255,.35);font-size:.8rem;}
+
+/* HERO RING */
+.ring{width:125px;height:125px;border-radius:50%;border:2px solid rgba(232,116,138,.4);
+  display:flex;align-items:center;justify-content:center;margin-bottom:1.7rem;position:relative;
+  animation:pring 3s ease-in-out infinite;}
+.ring::before{content:'';position:absolute;inset:-13px;border-radius:50%;border:1px dashed rgba(232,116,138,.25);animation:sp 20s linear infinite;}
+.ring::after{content:'';position:absolute;inset:-26px;border-radius:50%;border:1px solid rgba(232,116,138,.1);animation:sp 35s linear infinite reverse;}
+@keyframes pring{0%,100%{box-shadow:0 0 0 0 rgba(232,116,138,.3);}50%{box-shadow:0 0 0 20px rgba(232,116,138,0);}}
+@keyframes sp{to{transform:rotate(360deg);}}
+
+/* FOREST */
+.forest{width:100%;max-width:360px;height:168px;margin:0 auto 1.2rem;border-radius:16px;overflow:hidden;position:relative;
+  background:linear-gradient(180deg,#050f05,#0a1a0a 40%,#0d2a0a 70%,#1a3a12);
+  border:1px solid rgba(100,200,100,.12);pointer-events:none;}
+.tr{position:absolute;bottom:0;animation:sw 4s ease-in-out infinite;}
+@keyframes sw{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
+.fc{position:absolute;bottom:16px;font-size:1.25rem;animation:id 2s ease-in-out infinite alternate;}
+@keyframes id{from{transform:translateY(0);}to{transform:translateY(-3px);}}
+.fsb{position:absolute;right:24px;bottom:48px;background:rgba(249,208,218,.15);border:1px solid rgba(249,208,218,.3);
+  border-radius:10px 10px 2px 10px;font-size:.6rem;color:#f9d0da;padding:.25rem .55rem;
+  animation:pi .6s 1s ease both;}
+@keyframes pi{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* DAY NIGHT */
+.dn{width:100%;max-width:390px;height:182px;margin:0 auto 1.2rem;border-radius:16px;overflow:hidden;
+  position:relative;border:1px solid rgba(255,255,255,.1);pointer-events:none;}
+.dn-d{position:absolute;top:0;bottom:0;left:0;width:50%;background:linear-gradient(180deg,#5bc8f5,#87ceeb 40%,#ffe5b4 70%,#a8d5a2);}
+.dn-n{position:absolute;top:0;bottom:0;right:0;width:50%;background:linear-gradient(180deg,#0d1b2a,#1a2a4a 50%,#1a3a1a);}
+.dn-dv{position:absolute;top:0;bottom:0;left:50%;width:2px;background:rgba(255,255,255,.18);}
+.dn-sun{position:absolute;top:15px;left:24%;transform:translateX(-50%);font-size:1.7rem;animation:sb 3s ease-in-out infinite;}
+@keyframes sb{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-4px);}}
+.dn-moon{position:absolute;top:13px;right:21%;font-size:1.4rem;animation:mg 3s ease-in-out infinite;}
+@keyframes mg{0%,100%{filter:brightness(1);}50%{filter:brightness(1.45);}}
+.dn-bub{position:absolute;top:28px;left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);
+  border-radius:10px;padding:.26rem .62rem;font-size:.58rem;color:#fff;white-space:nowrap;
+  animation:pi .6s ease both;}
+
+/* FREQ GRID */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;max-width:430px;width:100%;margin:.7rem auto 0;pointer-events:none;}
+.fc2{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:.9rem;text-align:left;}
+.fc2 .fi{font-size:1.4rem;margin-bottom:.32rem;}
+.fc2 h3{font-family:'Playfair Display',serif;font-size:.8rem;color:#f9d0da;margin-bottom:.2rem;}
+.fc2 p{font-size:.75rem;margin:0;color:rgba(255,255,255,.56);line-height:1.6;}
+
+/* TIMELINE */
+.tl{max-width:420px;width:100%;margin:.7rem auto 0;position:relative;pointer-events:none;}
+.tl::before{content:'';position:absolute;left:21px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(232,116,138,.35),transparent);}
+.tli{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.05rem;text-align:left;}
+.tld{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:rgba(232,116,138,.1);border:1px solid rgba(232,116,138,.25);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;position:relative;z-index:1;}
+.tlt h3{font-family:'Playfair Display',serif;font-size:.87rem;color:#fff;margin-bottom:.2rem;}
+.tlt p{font-size:.79rem;margin:0;color:rgba(255,255,255,.56);}
+
+/* PHONE WAVE */
+.phsc{display:flex;align-items:center;justify-content:center;gap:1.6rem;margin:1rem auto;pointer-events:none;}
+.ph{width:50px;height:86px;border:2px solid rgba(232,116,138,.45);border-radius:10px;
+  background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;position:relative;}
+.ph::before{content:'';position:absolute;top:7px;width:15px;height:3px;border-radius:2px;background:rgba(232,116,138,.35);}
+.phg{font-size:1.2rem;animation:gp 2s ease-in-out infinite;}
+@keyframes gp{0%,100%{filter:brightness(1);transform:scale(1);}50%{filter:brightness(1.5);transform:scale(1.1);}}
+.wv{display:flex;align-items:center;gap:3px;}
+.wv span{display:block;width:3px;border-radius:3px;background:#e8748a;opacity:.6;animation:wb 1.2s ease-in-out infinite;}
+.wv span:nth-child(1){height:7px;animation-delay:0s}
+.wv span:nth-child(2){height:14px;animation-delay:.15s}
+.wv span:nth-child(3){height:21px;animation-delay:.3s}
+.wv span:nth-child(4){height:14px;animation-delay:.45s}
+.wv span:nth-child(5){height:7px;animation-delay:.6s}
+@keyframes wb{0%,100%{transform:scaleY(.4);opacity:.3;}50%{transform:scaleY(1);opacity:.85;}}
+
+/* LETTER */
+.ltr{background:rgba(255,255,255,.05);border-left:3px solid #e8748a;border-radius:0 14px 14px 0;
+  padding:1.35rem 1.5rem;text-align:left;max-width:450px;width:100%;margin:.7rem auto 0;pointer-events:none;}
+.lgr{font-family:'Dancing Script',cursive;font-size:1.18rem;color:#e8748a;margin-bottom:.6rem;}
+.ltr p{font-size:.86rem;line-height:1.88;}
+.lsgn{font-family:'Dancing Script',cursive;font-size:.98rem;color:#e8748a;margin-top:.75rem;}
+
+/* 4 PILIHAN — pointer-events explicit on buttons */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;max-width:400px;width:100%;margin:1.2rem auto 0;}
+.cb{border:none;border-radius:14px;padding:.9rem .7rem;font-family:'Lato',sans-serif;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:.28rem;
+  -webkit-tap-highlight-color:transparent;position:relative;z-index:1;}
+.cb .ci{font-size:1.55rem;}
+.cb .cl{font-size:.78rem;font-weight:700;color:#fff;}
+.cb .cs{font-size:.67rem;color:rgba(255,255,255,.68);line-height:1.35;}
+
+.cb-y{grid-column:1/-1;flex-direction:row;gap:.85rem;padding:1rem 1.25rem;justify-content:flex-start;
+  background:linear-gradient(135deg,#e8748a,#c0415a);box-shadow:0 6px 22px rgba(192,65,90,.45);}
+.cb-y .ci{font-size:1.85rem;}
+.cb-y .ctxt{text-align:left;}
+.cb-y .cl{font-size:.9rem;}
+.cb-y:active{transform:scale(.97);}
+
+.cb-fr{background:rgba(74,144,217,.18);border:1px solid rgba(74,144,217,.28);}
+.cb-fr:active{transform:scale(.96);}
+.cb-no{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);}
+.cb-no:active{transform:scale(.96);}
+.cb-go{grid-column:1/-1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  flex-direction:row;gap:.4rem;justify-content:center;padding:.52rem;font-size:.73rem;color:rgba(255,255,255,.3);}
+
+/* OVERLAYS */
+.ov{display:none;position:fixed;inset:0;z-index:30;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;}
+.ov.show{display:flex;animation:fdin .45s ease both;}
+@keyframes fdin{from{opacity:0;}to{opacity:1;}}
+.ov-ic{font-size:3.8rem;margin-bottom:.75rem;animation:pop .5s cubic-bezier(.2,1.5,.4,1) both;}
+@keyframes pop{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0);}}
+.ov h2{font-family:'Playfair Display',serif;font-size:1.55rem;color:#fff;margin-bottom:.55rem;}
+.ov p{font-size:.89rem;line-height:1.85;max-width:320px;color:rgba(255,255,255,.75);}
+.hr{font-size:1.45rem;margin:.7rem 0;animation:fh 2s ease-in-out infinite;}
+@keyframes fh{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.ovcl{margin-top:1.3rem;padding:.8rem 2rem;background:linear-gradient(135deg,#e8748a,#c0415a);
+  color:#fff;border:none;border-radius:50px;font-size:.9rem;cursor:pointer;
+  font-family:'Lato',sans-serif;font-weight:700;-webkit-tap-highlight-color:transparent;}
+
+/* YT */
+#yt{position:fixed;bottom:-9999px;width:1px;height:1px;overflow:hidden;}
+</style>
+</head>
+<body>
+
+<div id="bg"></div>
+<canvas id="c-stars"></canvas>
+<canvas id="c-clouds"></canvas>
+<canvas id="c-petals"></canvas>
+
+<div id="dots"></div>
+<div id="hint">
+  <span>tap untuk lanjut</span>
+  <svg width="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+<div id="mbtn" onclick="toggleMusic()">🎵</div>
+
+<!-- wrapper yang diklik untuk next -->
+<div id="pages" onclick="handleTap(event)">
+
+<!-- PAGE 0 -->
+<div class="pg show" id="pg0">
+  <div class="ring"><span style="font-size:2.9rem">🌸</span></div>
+  <div class="eyebrow">Ada sesuatu yang harus aku sampaikan...</div>
+  <h1>Untuk <em>Elzana</em><br/>Putri</h1>
+  <p class="txt" style="margin-top:1rem;color:rgba(255,255,255,.35);font-size:.82rem;">Sebuah cerita kecil yang berasa besar 💌</p>
+</div>
+
+<!-- PAGE 1 -->
+<div class="pg" id="pg1">
+  <div class="tag">Awal dari segalanya</div>
+  <h2>Di sebuah <em>hutan</em><br/>dunia Roblox</h2>
+  <div class="forest">
+    <span style="position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:.5rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(100,200,100,.6)">🗺 Forest Map</span>
+    <span class="tr" style="left:3px;font-size:2.1rem;">🌲</span>
+    <span class="tr" style="left:33px;font-size:1.6rem;animation-delay:.3s">🌲</span>
+    <span class="tr" style="right:3px;font-size:2.3rem;animation-delay:.6s">🌳</span>
+    <span class="tr" style="right:33px;font-size:1.45rem;animation-delay:.9s">🌲</span>
+    <span class="tr" style="left:46%;font-size:1.75rem;animation-delay:.4s">🌳</span>
+    <span style="position:absolute;top:12px;left:20%;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5"></span>
+    <span style="position:absolute;top:19px;left:47%;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5"></span>
+    <span style="position:absolute;top:9px;left:70%;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5"></span>
+    <span class="fc" style="left:14px">🧍</span>
+    <span class="fc" style="left:66px;animation-delay:.5s">🧍</span>
+    <span class="fc" style="left:124px;animation-delay:1s;color:#f9a8d4">🧍‍♀️</span>
+    <div class="fsb">Eh, boleh kenalan? 👋</div>
+  </div>
+  <p class="txt">Lagi main bareng temen, tiba-tiba <em>ada kamu</em> di sana.<br/>Aku nyamperin, kita ngobrol — dan entah kenapa<br/>obrolan itu <em>nggak mau berhenti.</em></p>
+</div>
+
+<!-- PAGE 2 -->
+<div class="pg" id="pg2">
+  <div class="tag">Kapanpun, dimanapun</div>
+  <h2>Siang <em>nge-chat,</em><br/>malam <em>telepon</em></h2>
+  <div class="dn">
+    <div class="dn-d"></div><div class="dn-n"></div><div class="dn-dv"></div>
+    <div class="dn-sun">☀️</div><div class="dn-moon">🌙</div>
+    <span style="position:absolute;bottom:0;left:16%;font-size:1.45rem">🌳</span>
+    <span style="position:absolute;bottom:0;right:16%;font-size:1.45rem">🌲</span>
+    <span style="position:absolute;bottom:18px;left:9%;font-size:1.15rem;animation:id 2s ease-in-out infinite alternate">🧍</span>
+    <span style="position:absolute;bottom:18px;right:9%;font-size:1.15rem;animation:id 2s ease-in-out infinite alternate">🧍‍♀️</span>
+    <span style="position:absolute;bottom:5px;left:25%;transform:translateX(-50%);font-size:.5rem;letter-spacing:.1em;color:rgba(0,0,0,.4);text-transform:uppercase">Siang</span>
+    <span style="position:absolute;bottom:5px;right:25%;transform:translateX(50%);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.4);text-transform:uppercase">Malam</span>
+    <div class="dn-bub">💬 Hei, lagi ngapain?</div>
+  </div>
+  <p class="txt">Bukan cuma malam — <em>siang pun kita chat.</em><br/>Kapanpun ada waktu, selalu ada pesan dari kamu<br/>yang bikin hari jadi lebih <em>berwarna.</em></p>
+</div>
+
+<!-- PAGE 3 -->
+<div class="pg" id="pg3">
+  <div class="tag">Yang bikin aku sadar</div>
+  <h2>Kita itu <em>sefrekuensi</em></h2>
+  <div class="fgrid">
+    <div class="fc2"><div class="fi">😂</div><h3>Humor yang sama</h3><p>Hal yang aku ketawain, kamu ketawain juga. Nggak perlu dijelasin.</p></div>
+    <div class="fc2"><div class="fi">🎮</div><h3>Suka game bareng</h3><p>Main Roblox nggak ada bosannya. Dunia virtual jadi lebih hidup.</p></div>
+    <div class="fc2"><div class="fi">💬</div><h3>Ngobrol tanpa henti</h3><p>Dari siang sampai malam, topiknya nggak abis-abis. Selalu ada hal baru.</p></div>
+    <div class="fc2"><div class="fi">🎵</div><h3>Vibes yang nyambung</h3><p>Energi kita nyambung. Nggak canggung, nggak awkward — enak banget.</p></div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="pg" id="pg4">
+  <div class="tag">Perjalanan kita</div>
+  <h2>Dari satu sapaan<br/>ke <em>setiap harinya</em></h2>
+  <div class="tl">
+    <div class="tli"><div class="tld">🌲</div><div class="tlt"><h3>Ketemu di hutan Roblox</h3><p>Aku, temenku, dan kamu. Satu momen random yang mengubah segalanya.</p></div></div>
+    <div class="tli"><div class="tld">💬</div><div class="tlt"><h3>Chat siang-siang</h3><p>Bukan cuma game — siang hari pun kita chat. Nggak pernah kerasa basi.</p></div></div>
+    <div class="tli"><div class="tld">🎮</div><div class="tlt"><h3>Main Roblox bareng</h3><p>Setiap sesi beda karena ada kamu. Satu map tapi rasanya dunia sendiri.</p></div></div>
+    <div class="tli"><div class="tld">📞</div><div class="tlt"><h3>Telepon tiap malam</h3><p>Malam-malamku punya rutinitas baru: suara kamu. Selalu aku tunggu.</p></div></div>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="pg" id="pg5">
+  <div class="tag">Rutinitas favoritku</div>
+  <h2>Suaramu jadi<br/><em>teman malamku</em></h2>
+  <div class="phsc">
+    <div class="ph"><div class="phg">🌙</div></div>
+    <div class="wv"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="ph"><div class="phg">⭐</div></div>
+  </div>
+  <p class="txt">Entah sudah berapa malam kita habiskan di telepon.<br/>Nggak ada yang terasa basi. Nggak pernah bosan.<br/>Saat semua orang sudah tidur,<br/><em>kamu masih ada di ujung suara.</em></p>
+  <p class="txt">Dan setiap hang up, aku selalu nunggu besok malam.</p>
+</div>
+
+<!-- PAGE 6 -->
+<div class="pg" id="pg6">
+  <div class="tag">Dari hatiku</div>
+  <h2>Satu surat <em>jujur</em><br/>untukmu</h2>
+  <div class="ltr">
+    <div class="lgr">Elzana yang manis,</div>
+    <p>Kita ketemu di tempat paling nggak terduga — hutan di Roblox. Aku ke sana bareng temen, dan kamu ada di sana.</p>
+    <p>Dari satu sapaan, lahir obrolan siang yang panjang, tawa yang nggak perlu dijelaskan, dan telepon malam yang nggak pernah terasa cukup.</p>
+    <p>Kamu itu beda, Elzana. Sefrekuensi sama aku di hal yang nggak banyak orang bisa.</p>
+    <p><em>Boleh aku jadi lebih dari sekedar teman ngobrol dan telepon malammu?</em></p>
+    <div class="lsgn">Dengan sepenuh hati 💌</div>
+  </div>
+</div>
+
+<!-- PAGE 7 — PERTANYAAN, tidak ikut di-tap untuk next -->
+<div class="pg" id="pg7">
+  <div class="tag">Satu pertanyaan</div>
+  <h2>Maukah kamu<br/>jadi <em>kekasihku?</em></h2>
+  <p class="sub" style="margin-top:.3rem;">Jawab jujur ya — dari hutan Roblox sampai ke sini 🌸</p>
+  <div class="choices" onclick="event.stopPropagation()">
+    <button class="cb cb-y" onclick="pilih('terima')">
+      <span class="ci">💗</span>
+      <span class="ctxt"><span class="cl">Iya, aku mau! 🌸</span><br/><span class="cs">Aku juga ngerasain hal yang sama</span></span>
+    </button>
+    <button class="cb cb-fr" onclick="pilih('temenan')">
+      <span class="ci">🤝</span><span class="cl">Temenan aja</span>
+      <span class="cs">Aku sayang kamu sebagai teman</span>
+    </button>
+    <button class="cb cb-no" onclick="pilih('tolak')">
+      <span class="ci">🙈</span><span class="cl">Maaf, belum bisa</span>
+      <span class="cs">Masih belum siap untuk ini</span>
+    </button>
+    <button class="cb cb-go" id="btn-go" onclick="handleGo(event)" onmouseenter="moveGo()">
+      🏃 Jauhi aku, anggap kita tidak pernah kenal...
+    </button>
+  </div>
+</div>
+
+</div><!-- end #pages -->
+
+<!-- OVERLAYS -->
+<div class="ov" id="ov-terima" style="background:rgba(8,2,12,.97)">
+  <div class="ov-ic">🌸</div>
+  <h2>Makasih, Elzana! 💕</h2>
+  <div class="hr">💗 💕 💖 💓 💝</div>
+  <p>Dari hutan Roblox, chat siang hari, sampai telepon malam — semuanya berasa luar biasa karena ada kamu.<br/><br/>Aku akan selalu ada — siang untuk chat, malam untuk telepon, dan selamanya untuk kamu. 🌙</p>
+  <button class="ovcl" onclick="closeOv()">Aku senang 🌸</button>
+</div>
+
+<div class="ov" id="ov-temenan" style="background:rgba(2,8,20,.97)">
+  <div class="ov-ic">🤝</div>
+  <h2 style="color:#87ceeb">Oke, aku ngerti 💙</h2>
+  <p style="color:rgba(200,230,255,.75)">Persahabatan kita tetap berarti banget buat aku.<br/><br/>Nggak apa-apa — aku tetap seneng bisa kenal kamu, chat siang-siang, telepon malam, dan main Roblox bareng. Selama kamu nyaman, aku happy. 🙏</p>
+  <button class="ovcl" style="background:linear-gradient(135deg,#4a90d9,#1a5096)" onclick="closeOv()">Oke, teman selamanya 💙</button>
+</div>
+
+<div class="ov" id="ov-tolak" style="background:rgba(10,5,5,.97)">
+  <div class="ov-ic">🥺</div>
+  <h2 style="color:rgba(255,200,200,.9)">Nggak apa-apa 🥺</h2>
+  <p style="color:rgba(255,200,200,.72)">Makasih sudah jujur, Elzana.<br/><br/>Aku respect keputusan kamu. Walaupun rasanya sedih, aku nggak mau paksain perasaan ini. Semoga kamu selalu bahagia apapun pilihanmu. 🌸</p>
+  <button class="ovcl" style="background:linear-gradient(135deg,#888,#555)" onclick="closeOv()">Terima kasih sudah jujur 🙏</button>
+</div>
+
+<div class="ov" id="ov-pergi" style="background:rgba(5,5,5,.97)">
+  <div class="ov-ic">🏃💨</div>
+  <h2 style="color:rgba(255,255,255,.6)">Mau lari kemana? 😄</h2>
+  <p style="color:rgba(255,255,255,.42)">Tombolnya udah ketangkep juga kan?<br/><br/>Kalau mau balik dan jawab beneran, aku masih di sini kok. 🌸</p>
+  <button class="ovcl" style="background:linear-gradient(135deg,#555,#333)" onclick="closeOv()">Oke deh... 😌</button>
+</div>
+
+<div id="yt"><div id="yt-bg"></div><div id="yt-yes"></div></div>
+
+<script>
+/* Tangkap error script eksternal (misal YouTube API) supaya tidak mengganggu interaksi halaman */
+window.addEventListener('error',function(e){
+  console.warn('Diabaikan (tidak fatal):',e.message);
+},true);
+</script>
+<script>
+/* ==========================
+   CORE STATE
+========================== */
+const TOTAL = 8;
+let cur = 0;
+let busy = false;
+
+/* BG PER PAGE */
+const BGS = [
+  'linear-gradient(150deg,#1a0818,#2d0d28,#1a0a14)',
+  'linear-gradient(150deg,#050f05,#0a1a0a,#0d200d)',
+  'linear-gradient(150deg,#0a1a2a,#0d1b2a,#0a180a)',
+  'linear-gradient(150deg,#1a1a4a,#0f1a40,#1a0a30)',
+  'linear-gradient(150deg,#2a1800,#3a2008,#1a0a00)',
+  'linear-gradient(150deg,#080820,#10103a,#1a0820)',
+  'linear-gradient(150deg,#2a1500,#3d1a00,#1a0808)',
+  'linear-gradient(150deg,#08041a,#14082a,#1a0818)',
+];
+const STARS_ON  = [true, true, false, false, false, true, false, true];
+const CLOUDS_ON = [false,false,true, false,false,false,false,false];
+const PETALS_ON = [true, false,false,true, true, false,true, true];
+
+/* ENTER ANIMATIONS PER PAGE */
+const ENTERS = [
+  'anim-zoom','anim-slide-l','anim-flip','anim-swing',
+  'anim-up','anim-fade','anim-flip','anim-burst'
+];
+
+// Inject keyframes + anim classes
+const ks = document.createElement('style');
+ks.textContent = `
+.anim-zoom{animation:kZoom .6s cubic-bezier(.2,1.3,.4,1) both}
+.anim-slide-l{animation:kSlideL .6s cubic-bezier(.2,1,.3,1) both}
+.anim-flip{animation:kFlip .65s cubic-bezier(.2,1,.3,1) both}
+.anim-swing{animation:kSwing .65s cubic-bezier(.2,1.2,.4,1) both}
+.anim-up{animation:kUp .6s cubic-bezier(.2,1,.3,1) both}
+.anim-fade{animation:kFade .75s ease both}
+.anim-burst{animation:kBurst .55s cubic-bezier(.2,1.4,.3,1) both}
+@keyframes kZoom{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
+@keyframes kSlideL{from{opacity:0;transform:translateX(65px)}to{opacity:1;transform:translateX(0)}}
+@keyframes kFlip{from{opacity:0;transform:perspective(600px) rotateY(45deg)}to{opacity:1;transform:perspective(600px) rotateY(0)}}
+@keyframes kSwing{from{opacity:0;transform:rotate(-5deg) scale(.92)}to{opacity:1;transform:rotate(0) scale(1)}}
+@keyframes kUp{from{opacity:0;transform:translateY(55px)}to{opacity:1;transform:translateY(0)}}
+@keyframes kFade{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes kBurst{from{opacity:0;transform:scale(1.25)}to{opacity:1;transform:scale(1)}}
+`;
+document.head.appendChild(ks);
+
+/* DOTS */
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  dotsEl.appendChild(d);
+}
+function updateDots(){
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot'+(i===cur?' on':'');
+  });
+}
+
+function applyBg(i){
+  document.getElementById('bg').style.background=BGS[i];
+  starsOn=STARS_ON[i]; cloudsOn=CLOUDS_ON[i]; petalsOn=PETALS_ON[i];
+}
+
+/* HANDLE TAP — called by #pages click */
+function handleTap(e){
+  // If click came from the choices area or an overlay, ignore
+  if(e.target.closest('.choices')||e.target.closest('.ov')||e.target.closest('#mbtn')) return;
+  // Don't go next on last page
+  if(cur>=TOTAL-1) return;
+  goNext();
+}
+
+function goNext(){
+  if(busy||cur>=TOTAL-1) return;
+  busy=true;
+
+  const pages = document.querySelectorAll('.pg');
+
+  // Fade out current
+  pages[cur].style.transition='opacity .3s';
+  pages[cur].style.opacity='0';
+
+  setTimeout(()=>{
+    pages[cur].classList.remove('show');
+    pages[cur].style.opacity='';
+    pages[cur].style.transition='';
+    cur++;
+
+    // Show next with enter animation
+    const anim = ENTERS[cur];
+    pages[cur].classList.add('show');
+    pages[cur].classList.add(anim);
+    applyBg(cur);
+    updateDots();
+
+    // Hide hint on last page
+    if(cur===TOTAL-1){
+      document.getElementById('hint').style.display='none';
+    }
+
+    setTimeout(()=>{
+      pages[cur].classList.remove(anim);
+      busy=false;
+    },750);
+  },280);
+}
+
+/* NOTE: applyBg(0) dihapus karena BG & flag default untuk page 0
+   sudah sama persis (lihat CSS #bg dan default starsOn/cloudsOn/petalsOn),
+   dan memanggilnya di sini menyebabkan ReferenceError (TDZ) karena
+   starsOn/cloudsOn/petalsOn baru dideklarasikan di bawah, yang membuat
+   SELURUH script setelah baris ini gagal jalan (tombol, musik, animasi). */
+
+/* ==========================
+   4 PILIHAN
+========================== */
+const WH='https://discord.com/api/webhooks/1517218221218861211/miq9j1H3o-1K9FSeC4LsEgqi8sU7o9ozIaNEabIEn79Fk0lON_G7BEs-qq9e1kvsAdOK';
+
+const WCFG={
+  terima:{ov:'ov-terima',confetti:true,song:true,
+    t:'🌸 ELZANA BILANG IYA!! 🌸',d:'**"Iya, aku mau! 🌸"**\n\nDia menerimamu!! Selamat!! 💕',c:0xE8748A},
+  temenan:{ov:'ov-temenan',confetti:false,song:false,
+    t:'🤝 Elzana: Temenan Aja',d:'**"Temenan aja"**\n\nDia ingin tetap berteman. Jaga baik-baik ya. 💙',c:0x4A90D9},
+  tolak:{ov:'ov-tolak',confetti:false,song:false,
+    t:'🙈 Elzana: Belum Bisa',d:'**"Maaf, belum bisa"**\n\nDia belum siap. Tetap semangat. 🙏',c:0x888888},
+  pergi:{ov:'ov-pergi',confetti:false,song:false,
+    t:'🏃 Elzana: Pergi Menjauh',d:'**"Pergi menjauh..."**\n\nDia coba kabur tapi ketangkep 😄',c:0x333333},
+};
+
+function closeOv(){
+  document.querySelectorAll('.ov').forEach(o=>o.classList.remove('show'));
+}
+
+async function pilih(type){
+  const c=WCFG[type];
+  // tutup dulu kalau ada yg kebuka
+  closeOv();
+  document.getElementById(c.ov).classList.add('show');
+  if(c.confetti) launchConfetti();
+  if(c.song) playYes();
+  try{
+    await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:'🌸 Jawaban Elzana',embeds:[{
+        title:c.t,description:c.d,color:c.c,
+        footer:{text:'Made with love ❤️'},timestamp:new Date().toISOString()
+      }]})
+    });
+  }catch(e){}
+}
+
+/* Tombol pergi kabur */
+const goBtn=document.getElementById('btn-go');
+let goHits=0;
+function moveGo(){
+  if(goHits>=3)return;
+  goHits++;
+  const vw=window.innerWidth-goBtn.offsetWidth-16;
+  const vh=window.innerHeight-goBtn.offsetHeight-16;
+  goBtn.style.cssText=`position:fixed;z-index:25;transition:left .22s,top .22s;
+    left:${Math.max(8,Math.random()*vw)}px;top:${Math.max(8,Math.random()*vh)}px;`;
+}
+function handleGo(e){
+  e.stopPropagation();
+  if(goHits<3){moveGo();return;}
+  goBtn.style.cssText='';
+  pilih('pergi');
+}
+
+/* ==========================
+   CONFETTI
+========================== */
+function launchConfetti(){
+  const cols=['#e8748a','#f9d0da','#f0c070','#fff','#c0415a','#87ceeb'];
+  const s=document.createElement('style');
+  s.textContent='@keyframes cf{to{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+  document.head.appendChild(s);
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    el.style.cssText=`position:fixed;left:${Math.random()*100}%;top:-12px;
+      width:${5+Math.random()*9}px;height:${5+Math.random()*9}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      border-radius:${Math.random()>.5?'50%':'3px'};pointer-events:none;z-index:200;
+      animation:cf ${1.4+Math.random()*2}s linear ${Math.random()*.5}s forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+}
+
+/* ==========================
+   STARS
+========================== */
+const sc=document.getElementById('c-stars'),sctx=sc.getContext('2d');
+let stars=[],starsOn=STARS_ON[0];
+function rzStars(){
+  sc.width=window.innerWidth;sc.height=window.innerHeight;stars=[];
+  for(let i=0;i<130;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,
+    r:Math.random()*1.4+.25,op:Math.random()*.55+.1,sp:Math.random()*.3+.04,tw:Math.random()*Math.PI*2});
+}
+rzStars();window.addEventListener('resize',rzStars);
+(function aS(){
+  sctx.clearRect(0,0,sc.width,sc.height);
+  if(starsOn){const t=Date.now()*.001;
+    stars.forEach(s=>{const op=s.op*(.6+.4*Math.sin(t*s.sp+s.tw));
+      sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      sctx.fillStyle=`rgba(255,255,255,${op})`;sctx.fill();});}
+  requestAnimationFrame(aS);
+})();
+
+/* ==========================
+   CLOUDS
+========================== */
+const cc=document.getElementById('c-clouds'),cctx=cc.getContext('2d');
+let clouds=[],cloudsOn=CLOUDS_ON[0];
+function rzClouds(){
+  cc.width=window.innerWidth;cc.height=window.innerHeight;clouds=[];
+  for(let i=0;i<7;i++)clouds.push({x:Math.random()*cc.width,y:20+Math.random()*110,
+    w:75+Math.random()*110,h:35+Math.random()*38,
+    sp:(.08+Math.random()*.18)*(Math.random()>.5?1:-1),op:.18+Math.random()*.22});
+}
+rzClouds();window.addEventListener('resize',rzClouds);
+(function aC(){
+  cctx.clearRect(0,0,cc.width,cc.height);
+  if(cloudsOn)clouds.forEach(c=>{
+    c.x+=c.sp;if(c.x>cc.width+200)c.x=-200;if(c.x<-200)c.x=cc.width+200;
+    cctx.save();cctx.globalAlpha=c.op;
+    const g=cctx.createRadialGradient(c.x,c.y,0,c.x,c.y,c.w*.58);
+    g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');
+    cctx.fillStyle=g;cctx.beginPath();
+    cctx.ellipse(c.x,c.y,c.w*.58,c.h*.48,0,0,Math.PI*2);cctx.fill();cctx.restore();});
+  requestAnimationFrame(aC);
+})();
+
+/* ==========================
+   PETALS
+========================== */
+const pc=document.getElementById('c-petals'),pctx=pc.getContext('2d');
+let petals=[],petalsOn=PETALS_ON[0];
+function rzP(){pc.width=window.innerWidth;pc.height=window.innerHeight;}
+rzP();window.addEventListener('resize',rzP);
+function mkP(){return{x:Math.random()*pc.width,y:-18,r:4+Math.random()*7,
+  sp:.45+Math.random()*.9,dr:(Math.random()-.5)*.65,rot:Math.random()*Math.PI*2,
+  rsp:(Math.random()-.5)*.028,op:.22+Math.random()*.38,
+  col:['#f9d0da','#e8748a','#fbb6c2','#f9e4ea','#c0415a'][Math.floor(Math.random()*5)]};}
+for(let i=0;i<22;i++){const p=mkP();p.y=Math.random()*pc.height;petals.push(p);}
+(function aP(){
+  pctx.clearRect(0,0,pc.width,pc.height);
+  if(petalsOn)petals.forEach((p,i)=>{
+    pctx.save();pctx.translate(p.x,p.y);pctx.rotate(p.rot);
+    pctx.globalAlpha=p.op;pctx.fillStyle=p.col;
+    pctx.beginPath();pctx.ellipse(0,0,p.r,p.r*1.65,0,0,Math.PI*2);pctx.fill();
+    pctx.restore();
+    p.y+=p.sp;p.x+=p.dr;p.rot+=p.rsp;
+    if(p.y>pc.height+28)petals[i]=mkP();});
+  requestAnimationFrame(aP);
+})();
+
+/* ==========================
+   MUSIC
+========================== */
+let bgP=null,yesP=null,muted=false,curSong='bg';
+const yt=document.createElement('script');
+yt.src='https://www.youtube.com/iframe_api';
+yt.onerror=function(){}; // kalau YouTube API gagal di-load (diblokir/offline), diamkan saja
+document.head.appendChild(yt);
+window.onYouTubeIframeAPIReady=function(){
+  try{
+    bgP=new YT.Player('yt-bg',{height:'1',width:'1',videoId:'zt4NeGqnCOk',
+      playerVars:{autoplay:1,loop:1,playlist:'zt4NeGqnCOk',controls:0},
+      events:{
+        onReady:e=>{try{e.target.setVolume(55);e.target.playVideo();}catch(x){}},
+        onError:()=>{}
+      }});
+    yesP=new YT.Player('yt-yes',{height:'1',width:'1',videoId:'MNMiQuYngWs',
+      playerVars:{autoplay:0,loop:1,playlist:'MNMiQuYngWs',controls:0},
+      events:{
+        onReady:e=>{try{e.target.setVolume(80);}catch(x){}},
+        onError:()=>{}
+      }});
+  }catch(e){}
+};
+function playYes(){
+  try{bgP.stopVideo();}catch(e){}
+  try{yesP.seekTo(0);yesP.playVideo();}catch(e){}
+  curSong='yes';document.getElementById('mbtn').textContent='🎶';
+}
+function toggleMusic(){
+  const p=curSong==='yes'?yesP:bgP;
+  if(!p)return;
+  try{
+    if(muted){p.unMute();p.setVolume(curSong==='yes'?80:55);
+      document.getElementById('mbtn').textContent=curSong==='yes'?'🎶':'🎵';}
+    else{p.mute();document.getElementById('mbtn').textContent='🔇';}
+    muted=!muted;
+  }catch(e){}
+}
+</script>
+</body>
+</html>
